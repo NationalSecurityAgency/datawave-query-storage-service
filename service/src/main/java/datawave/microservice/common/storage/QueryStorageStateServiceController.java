@@ -6,7 +6,7 @@ import datawave.microservice.query.storage.TaskCache;
 import datawave.microservice.query.storage.TaskDescription;
 import datawave.microservice.query.storage.TaskStates;
 import datawave.microservice.query.storage.TaskStatesCache;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +33,7 @@ public class QueryStorageStateServiceController implements QueryStorageStateServ
         this.taskCache = taskCache;
     }
     
-    @ApiOperation(value = "Get the running queries.")
+    @Operation(summary = "Get the running queries.")
     @Secured({"AuthorizedUser", "AuthorizedServer", "InternalUser", "Administrator"})
     @RequestMapping(path = "/queries", method = RequestMethod.GET)
     @Override
@@ -48,7 +48,7 @@ public class QueryStorageStateServiceController implements QueryStorageStateServ
         return queries;
     }
     
-    @ApiOperation(value = "Get the query and task states for a query")
+    @Operation(summary = "Get the query and task states for a query")
     @Secured({"AuthorizedUser", "AuthorizedServer", "InternalUser", "Administrator"})
     @RequestMapping(path = "/query/{id}", method = RequestMethod.GET)
     @Override
@@ -60,7 +60,7 @@ public class QueryStorageStateServiceController implements QueryStorageStateServ
         return null;
     }
     
-    @ApiOperation(value = "Get the list of tasks for a query")
+    @Operation(summary = "Get the list of tasks for a query")
     @Secured({"AuthorizedUser", "AuthorizedServer", "InternalUser", "Administrator"})
     @RequestMapping(path = "/tasks/{id}", method = RequestMethod.GET)
     @Override
