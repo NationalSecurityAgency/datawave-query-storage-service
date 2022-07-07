@@ -9,6 +9,13 @@
     </parent>
     <artifactId>query-storage-api</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <url>https://github.com/NationalSecurityAgency/datawave-query-storage-service</url>
+    <scm>
+        <connection>scm:git:https://github.com/NationalSecurityAgency/datawave-query-storage-service.git</connection>
+        <developerConnection>scm:git:git@github.com:NationalSecurityAgency/datawave-query-storage-service.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/NationalSecurityAgency/datawave-query-storage-service</url>
+    </scm>
     <properties>
         <version.datawave>3.27.0-SNAPSHOT</version.datawave>
         <version.lang3>3.3.2</version.lang3>
