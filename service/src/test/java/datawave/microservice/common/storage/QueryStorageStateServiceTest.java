@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import datawave.core.query.configuration.QueryData;
 import datawave.core.query.logic.QueryCheckpoint;
 import datawave.microservice.authorization.jwt.JWTRestTemplate;
-import datawave.microservice.authorization.user.ProxiedUserDetails;
+import datawave.microservice.authorization.user.DatawaveUserDetails;
 import datawave.microservice.query.messaging.QueryResultsManager;
 import datawave.microservice.query.remote.QueryRequest;
 import datawave.microservice.query.storage.QueryState;
@@ -156,12 +156,12 @@ public class QueryStorageStateServiceTest {
      * This is a query state service implementation invokes the method by using the webservice hosted on a local port using the role provided at construction.
      */
     private class TestQueryStateService implements QueryStorageStateService {
-        private ProxiedUserDetails authUser;
+        private DatawaveUserDetails authUser;
         
         public TestQueryStateService(String asRole) {
             Collection<String> roles = Collections.singleton("Administrator");
             DatawaveUser uathDWUser = new DatawaveUser(DN, USER, null, roles, null, System.currentTimeMillis());
-            authUser = new ProxiedUserDetails(Collections.singleton(uathDWUser), uathDWUser.getCreationTime());
+            authUser = new DatawaveUserDetails(Collections.singleton(uathDWUser), uathDWUser.getCreationTime());
         }
         
         @Override
