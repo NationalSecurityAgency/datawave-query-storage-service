@@ -1,9 +1,9 @@
 package datawave.microservice.common.storage;
 
+import java.util.List;
+
 import datawave.microservice.query.storage.QueryState;
 import datawave.microservice.query.storage.TaskDescription;
-
-import java.util.List;
 
 /**
  * This is the interface to the query storage state service

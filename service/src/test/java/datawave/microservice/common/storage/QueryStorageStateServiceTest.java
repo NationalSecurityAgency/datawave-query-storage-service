@@ -1,27 +1,18 @@
 package datawave.microservice.common.storage;
 
-import com.ctc.wstx.io.InputBootstrapper;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import datawave.core.query.configuration.QueryData;
-import datawave.core.query.logic.QueryCheckpoint;
-import datawave.microservice.authorization.jwt.JWTRestTemplate;
-import datawave.microservice.authorization.user.DatawaveUserDetails;
-import datawave.microservice.query.messaging.QueryResultsManager;
-import datawave.microservice.query.remote.QueryRequest;
-import datawave.microservice.query.storage.QueryState;
-import datawave.microservice.query.storage.QueryStatus;
-import datawave.microservice.query.storage.QueryStorageCache;
-import datawave.microservice.query.storage.QueryTask;
-import datawave.microservice.query.storage.TaskDescription;
-import datawave.microservice.query.storage.TaskKey;
-import datawave.microservice.query.storage.TaskLockException;
-import datawave.microservice.query.storage.TaskStates;
-import datawave.query.iterator.QueryIterator;
-import datawave.security.authorization.DatawaveUser;
-import datawave.security.authorization.SubjectIssuerDNPair;
-import datawave.webservice.query.Query;
-import datawave.webservice.query.QueryImpl;
+import static datawave.security.authorization.DatawaveUser.UserType.USER;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.accumulo.core.client.IteratorSetting;
 import org.apache.accumulo.core.data.Range;
 import org.apache.accumulo.core.security.Authorizations;
@@ -44,18 +35,29 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.ctc.wstx.io.InputBootstrapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static datawave.security.authorization.DatawaveUser.UserType.USER;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import datawave.core.query.configuration.QueryData;
+import datawave.core.query.logic.QueryCheckpoint;
+import datawave.microservice.authorization.jwt.JWTRestTemplate;
+import datawave.microservice.authorization.user.DatawaveUserDetails;
+import datawave.microservice.query.messaging.QueryResultsManager;
+import datawave.microservice.query.remote.QueryRequest;
+import datawave.microservice.query.storage.QueryState;
+import datawave.microservice.query.storage.QueryStatus;
+import datawave.microservice.query.storage.QueryStorageCache;
+import datawave.microservice.query.storage.QueryTask;
+import datawave.microservice.query.storage.TaskDescription;
+import datawave.microservice.query.storage.TaskKey;
+import datawave.microservice.query.storage.TaskLockException;
+import datawave.microservice.query.storage.TaskStates;
+import datawave.query.iterator.QueryIterator;
+import datawave.security.authorization.DatawaveUser;
+import datawave.security.authorization.SubjectIssuerDNPair;
+import datawave.webservice.query.Query;
+import datawave.webservice.query.QueryImpl;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

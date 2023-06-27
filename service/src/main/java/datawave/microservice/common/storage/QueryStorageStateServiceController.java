@@ -1,12 +1,8 @@
 package datawave.microservice.common.storage;
 
-import datawave.microservice.query.storage.QueryStatus;
-import datawave.microservice.query.storage.QueryStatusCache;
-import datawave.microservice.query.storage.TaskCache;
-import datawave.microservice.query.storage.TaskDescription;
-import datawave.microservice.query.storage.TaskStates;
-import datawave.microservice.query.storage.TaskStatesCache;
-import io.swagger.v3.oas.annotations.Operation;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,8 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+import datawave.microservice.query.storage.QueryStatus;
+import datawave.microservice.query.storage.QueryStatusCache;
+import datawave.microservice.query.storage.TaskCache;
+import datawave.microservice.query.storage.TaskDescription;
+import datawave.microservice.query.storage.TaskStates;
+import datawave.microservice.query.storage.TaskStatesCache;
+import io.swagger.v3.oas.annotations.Operation;
 
 /**
  * The QueryStorageController presents the REST endpoints for the query storage service.
