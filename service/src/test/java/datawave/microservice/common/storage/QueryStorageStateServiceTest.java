@@ -43,6 +43,8 @@ import datawave.core.query.configuration.QueryData;
 import datawave.core.query.logic.QueryCheckpoint;
 import datawave.microservice.authorization.jwt.JWTRestTemplate;
 import datawave.microservice.authorization.user.DatawaveUserDetails;
+import datawave.microservice.query.Query;
+import datawave.microservice.query.QueryImpl;
 import datawave.microservice.query.messaging.QueryResultsManager;
 import datawave.microservice.query.remote.QueryRequest;
 import datawave.microservice.query.storage.QueryState;
@@ -56,8 +58,6 @@ import datawave.microservice.query.storage.TaskStates;
 import datawave.query.iterator.QueryIterator;
 import datawave.security.authorization.DatawaveUser;
 import datawave.security.authorization.SubjectIssuerDNPair;
-import datawave.webservice.query.Query;
-import datawave.webservice.query.QueryImpl;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
