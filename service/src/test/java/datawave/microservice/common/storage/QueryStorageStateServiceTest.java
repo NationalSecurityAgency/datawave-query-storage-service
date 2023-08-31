@@ -25,8 +25,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +38,14 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ctc.wstx.io.InputBootstrapper;
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import datawave.core.query.configuration.QueryData;
 import datawave.core.query.logic.QueryCheckpoint;
@@ -65,11 +73,6 @@ import datawave.security.authorization.SubjectIssuerDNPair;
 @EnableRabbit
 public class QueryStorageStateServiceTest {
     
-    @Configuration
-    @Profile("QueryStorageStateServiceTest")
-    @ComponentScan(basePackages = {"datawave.microservice"})
-    public static class QueryStorageStateServiceTestConfiguration {}
-    
     @LocalServerPort
     private int webServicePort;
     
@@ -86,6 +89,9 @@ public class QueryStorageStateServiceTest {
     
     @Autowired
     private QueryStorageStateService storageStateService;
+    
+    @Autowired
+    private ObjectMapper objectMapper;
     
     private SubjectIssuerDNPair DN;
     private String userDN = "userDn";
@@ -188,14 +194,12 @@ public class QueryStorageStateServiceTest {
             
         }
         
-        private final ObjectMapper mapper = new ObjectMapper();
-        
         private QueryState toState(ResponseEntity<String> responseEntity) {
             if (responseEntity.getBody() == null) {
                 return null;
             }
             try {
-                return mapper.readerFor(QueryState.class).readValue(responseEntity.getBody());
+                return objectMapper.readValue(responseEntity.getBody(), QueryState.class);
             } catch (IOException e) {
                 throw new RuntimeException("Failed to decode value " + responseEntity.getBody(), e);
             }
@@ -206,7 +210,7 @@ public class QueryStorageStateServiceTest {
                 return null;
             }
             try {
-                return mapper.readValue(responseEntity.getBody(), new TypeReference<List<QueryState>>() {});
+                return objectMapper.readValue(responseEntity.getBody(), new TypeReference<List<QueryState>>() {});
             } catch (IOException e) {
                 throw new RuntimeException("Failed to decode value " + responseEntity.getBody(), e);
             }
@@ -217,10 +221,27 @@ public class QueryStorageStateServiceTest {
                 return null;
             }
             try {
-                return mapper.readValue(responseEntity.getBody(), new TypeReference<List<TaskDescription>>() {});
+                return objectMapper.readValue(responseEntity.getBody(), new TypeReference<List<TaskDescription>>() {});
             } catch (IOException e) {
                 throw new RuntimeException("Failed to decode value " + responseEntity.getBody(), e);
             }
+        }
+    }
+    
+    @Configuration
+    @Profile("QueryStorageStateServiceTest")
+    @ComponentScan(basePackages = {"datawave.microservice"})
+    public static class QueryStorageStateServiceTestConfiguration {
+        @Bean
+        public Module queryImplDeserializer(@Lazy ObjectMapper objectMapper) {
+            SimpleModule module = new SimpleModule();
+            module.addDeserializer(Query.class, new JsonDeserializer<Query>() {
+                @Override
+                public Query deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+                    return objectMapper.readValue(jsonParser, QueryImpl.class);
+                }
+            });
+            return module;
         }
     }
 }
