@@ -17,7 +17,7 @@
         <url>https://github.com/NationalSecurityAgency/datawave-query-storage-service</url>
     </scm>
     <properties>
-        <version.datawave>5.9.0-SNAPSHOT</version.datawave>
+        <version.datawave>7.0.0-SNAPSHOT</version.datawave>
         <version.lang3>3.12.0</version.lang3>
         <version.microservice.query.starter>1.0-SNAPSHOT</version.microservice.query.starter>
         <version.spring.messaging>5.3.5</version.spring.messaging>
